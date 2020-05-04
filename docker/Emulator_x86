@@ -78,6 +78,7 @@ RUN apt-get -qqy update && apt-get -qqy install --no-install-recommends \
     libvirt-bin \
     ubuntu-vm-builder \
     bridge-utils \
+    python3-pip \
  && apt clean all \
  && rm -rf /var/lib/apt/lists/*
 
@@ -140,11 +141,21 @@ RUN wget -nv -O chrome.zip "https://chromedriver.storage.googleapis.com/${CHROME
  && rm chrome.zip
 
 #================================================================
+# Download facebook apk 
+#================================================================
+ADD src/download_apps.py .
+ADD src/requirements.txt .
+RUN pip3 install --upgrade setuptools
+RUN pip3 install -r requirements.txt
+RUN python3 download_apps.py --app-url=https://apkpure.com/facebook/com.facebook.katana/versions --apk-name=facebook.apk --app-version=V267.1.0.46.120
+
+#================================================================
 # Download Google Play Services APK and Play Store from apklinker
 #================================================================
-Run wget -nv -O google_play_services.apk "https://www.apklinker.com/wp-content/uploads/uploaded_apk/5b5155e5ef4f8/com.google.android.gms_${GOOGLE_PLAY_SERVICE}-020700-204998136_12874013_MinAPI21_(x86)(nodpi)_apklinker.com.apk"
-Run wget -nv -O google_play_store.apk "https://www.apklinker.com/wp-content/uploads/uploaded_apk/5b632b1164e31/com.android.vending_${GOOGLE_PLAY_STORE}-all-0-PR-206665793_81105000_MinAPI16_(armeabi,armeabi-v7a,mips,mips64,x86,x86_64)(240,320,480dpi)_apklinker.com.apk"
-
+#Run wget -nv -O google_play_services.apk "https://www.apklinker.com/wp-content/uploads/uploaded_apk/5b5155e5ef4f8/com.google.android.gms_${GOOGLE_PLAY_SERVICE}-020700-204998136_12874013_MinAPI21_(x86)(nodpi)_apklinker.com.apk"
+#Run wget -nv -O google_play_services.apk  "https://download.apkpure.com/b/APK/Y29tLmdvb2dsZS5hbmRyb2lkLmdtc18yMDA2MTYwMjNfZWQxZjBhNzE?_fn=R29vZ2xlIFBsYXkgc2VydmljZXNfdjIwLjA2LjE2ICgwNDA4MDAtMjk2MTA0MjE1KV9hcGtwdXJlLmNvbS5hcGs&as=3945acac4b4b73d8676a303d224f31e85ea55b37&ai=238545296&_sa=ai&k=89cfe15bcca83c38a3f91d3de3766ec95ea7fdbf&_p=Y29tLmdvb2dsZS5hbmRyb2lkLmdtcw&c=1%7CTOOLS%7CZGV2PUdvb2dsZSUyMExMQyZ0PWFwayZzPTU1ODY4MjM5JnZuPTIwLjA2LjE2JTIwKDA0MDgwMC0yOTYxMDQyMTUpJnZjPTIwMDYxNjAyMw"
+#Run wget -nv -O google_play_store.apk "https://www.apklinker.com/wp-content/uploads/uploaded_apk/5b632b1164e31/com.android.vending_${GOOGLE_PLAY_STORE}-all-0-PR-206665793_81105000_MinAPI16_(armeabi,armeabi-v7a,mips,mips64,x86,x86_64)(240,320,480dpi)_apklinker.com.apk"
+#Run wget -nv -O google_play_store.apk "https://download.apkpure.com/b/APK/Y29tLmFuZHJvaWQudmVuZGluZ184MTk3MTIwMF9kMzZmN2E2MA?_fn=R29vZ2xlIFBsYXkgU3RvcmVfdjE5LjcuMTItYWxsIFswXSBbUFJdIDMwNTkxOTE4N19hcGtwdXJlLmNvbS5hcGs&as=fc33ee1611fb12e0a60d07413bfb61eb5ea55bcb&ai=238545296&_sa=ai&k=c89b7340a958dea5cd9b79a4bc0b90185ea7fe53&_p=Y29tLmFuZHJvaWQudmVuZGluZw&c=1%7CTOOLS%7CZGV2PUdvb2dsZSUyMExMQyZ0PWFwayZzPTIxNjgwNzIzJnZuPTE5LjcuMTItYWxsJTIwJTVCMCU1RCUyMCU1QlBSJTVEJTIwMzA1OTE5MTg3JnZjPTgxOTcxMjAw&hot=1&w=1"
 #================================================
 # noVNC Default Configurations
 # These Configurations can be changed through -e

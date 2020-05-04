@@ -1,9 +1,11 @@
 .idea/*
 .DS_Store
 *.pyc
-
+*.apk
 # Coverage
 .coverage
 coverage.xml
 xunit.xml
 coverage/*
+**.venv**
+**.vscode**
